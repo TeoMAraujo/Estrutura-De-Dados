@@ -14,3 +14,4 @@ float objeto::getY() const { return y; }
 
 float objeto::getLargura() const { return largura; }
 // tem que ter validação de colisão
+float objeto::getId() const { return id; }
