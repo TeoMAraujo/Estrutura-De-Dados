@@ -15,3 +15,10 @@ float objeto::getY() const { return y; }
 float objeto::getLargura() const { return largura; }
 // tem que ter validação de colisão
 float objeto::getId() const { return id; }
+
+void objeto::setX(int X) const { x = X; }
+
+void objeto::setY(int Y) const { y = Y; }
+
+void objeto::setLargura(int l) const { Largura = L; }
+// tem que ter validação de colisão

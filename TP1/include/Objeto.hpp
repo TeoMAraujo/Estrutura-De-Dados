@@ -11,8 +11,10 @@ private:
   float largura;
 
 public:
-  objeto(const float &x, const float &y,
+  objeto(const int &id, const int &tempo, const float &x, const float &y,
          const float &largura); // all arguments are in & to use less memory
+  int getIc() const; 
+  int getTempo() const;  
   float getX() const;
   float getY() const;
   float getLargura() const;

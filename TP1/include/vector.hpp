@@ -1,7 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <iostream>
+#include <iostream> // for debugging
 
 template <class T> class vector {
 private:
@@ -17,11 +17,16 @@ public:
     int get_size() const;
 
     // functions
-    void push_back(T obj);
+    void insert(int pos, T obj);
+    void remove(int pos); 
+    void push_back(T obj);I
+    void push_front(T obj);
     void pop_back();
+    void pop_front();
+    void clear();
 
     // operators
     T& operator[](int index);
 };
 
-#endif 
+#endif
