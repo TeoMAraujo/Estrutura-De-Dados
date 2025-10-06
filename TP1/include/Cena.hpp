@@ -13,7 +13,7 @@ public:
     Cena();
 
     //kinda getters and setters
-    vector<objeto>& Cena::getCena() 
+    vector<objeto>& getCena() 
     void addObject(const float &x, const float &y, const float &largura);
     void addMovement(const int &object, const int &tempo, const float &x, const float &y, const float &largura);
 

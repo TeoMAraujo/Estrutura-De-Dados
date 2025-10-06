@@ -18,8 +18,8 @@ int main(){
             case 'C':
                 principal.gerarCena(time);
                 vector<objetos> *ptr = principal.getCena();
-                for (int i = 0; i < *ptr.getSize()  ; ){
-                    std::cout << 'S' << time << ptr[i].getId() << setprecisionptr[i].getX() << ptr[i].getLargura() << '\n'; //largura in this case is already the x-final position 
+                for (int i = 0; i < *ptr.getSize()  ; i++){
+                    std::cout << 'S' << time << ptr[i].getId() << setprecisionptr[i].getX() << setprecision ptr[i].getLargura() << '\n'; //largura in this case is already the x-final position 
                 }
         
         }

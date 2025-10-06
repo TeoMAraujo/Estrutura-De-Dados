@@ -5,6 +5,7 @@
 vector<objeto>& Cena::getCena() {
     return cena;
 }
+
   void Cena::addObject(const float &x, const float &y,
                               const float &largura) {
     objeto temp(objetos.size(),0, x, y, largura);
@@ -23,8 +24,8 @@ vector<objeto>& Cena::getCena() {
 
   void Cena::cenaSortTime(const int &time){
     for (int i = 0; i < objetos.get_size() - 1; i++) { //iterate over objects
-      for (int i = objetos[i].get_size() - 1; i > -1; i--) { //iterate over movements
-        if (objetos[i][j].id <= time){ // find the movement for the time
+      for (int j = objetos[i].get_size() - 1; j > -1; j--) { //iterate over movements
+        if (objetos[i][j].getTempo() <= time){ // find the movement for the time
           cena.push_back(objetos[i][j]);
           break;
         }
@@ -77,7 +78,7 @@ void::Cen::mergeSort(vector<objeto> &arr, int left, int right){
 
 void Cena::sortOverlap(){
     for(int i = 1; i < cena.get_size(); i++){
-        for(int j = 0; i < i; j++){ //compare the first term until it own term
+        for(int j = 0; i < j; j++){ //compare the first term until it own term
             if (cena[j].getX() > cena[i].getX()){ //that implies that somepart it will be visible
                 if(cena[j].getX() >= (cena[i].getX() + cena[i].getLargura() - 1)){
                     continue; //when theres nothing to change
