@@ -2,6 +2,12 @@
 #include "Objeto.hpp"
 #include "vector.hpp"
 
+
+Cena::Cena() {
+    // Constructor can be empty if there's no special setup to do.
+    // Or you can initialize variables here if needed.
+}
+
 vector<objeto>& Cena::getCena() {
     return cena;
 }
