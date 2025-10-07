@@ -4,6 +4,7 @@ BIN = bin
 INC = include
 
 SOURCES = $(wildcard $(SRC)/*.cpp)
+SOURCES := $(filter-out $(SRC)/vector.cpp,$(SOURCES))
 OBJECTS = $(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SOURCES))
 
 CXX = g++
