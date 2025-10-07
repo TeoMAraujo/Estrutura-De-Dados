@@ -26,7 +26,7 @@ void Cena::cenaSortTime(const int &time) {
     cena.clear();
     for (int i = 0; i < objetos.get_size(); i++) {
         for (int j = objetos[i].get_size() - 1; j >= 0; j--) {
-            if (objetos[i][j].getTempo() <= time) {
+            if (objetos[i][j].getTempo() <= time) { 
                 cena.push_back(objetos[i][j]);
                 break;
             }
@@ -113,7 +113,7 @@ void Cena::sortOverlap(){
                     if((cena[j].getX() + cena[j].getLargura() - 1) > (cena[i].getX() + cena[i].getLargura() - 1)){ //if the behind object exceeds size
                         objeto temp = cena[i];
                         temp.setX(cena[j].getX() + cena[j].getLargura() - 1); //after the final of the front obj
-                        temp.setLargura((cena[i].getX() + cena[i].getLargura() - 1) - (cena[j].getX + cena[j].getLargura() - 1));
+                        temp.setLargura((cena[i].getX() + cena[i].getLargura() - 1) - (cena[j].getX() + cena[j].getLargura() - 1));
                         cena.insert(i+1, temp);
                         cena[i].setLargura(cena[j].getX()); //after the final of the front obj
                     }
@@ -127,13 +127,13 @@ void Cena::sortOverlap(){
                     break; //when theres nothing to change
                 }
                 else{
-                    if((cena[j].getX() + largura - 1) >= (cena[i].getX() + cena[i].getLargura())){ //if inside of other vector 
+                    if((cena[j].getX() + cena[j].getLargura() - 1) >= (cena[i].getX() + cena[i].getLargura())){ //if inside of other vector 
                         cena.remove(i);//if the size size +largura is less than vertor remove ]
                         break;
                     }
                     else{
                         cena[i].setX(cena[j].getX());
-                        cena[i].setLargura(cena[j].getX() + cena[i].getX()) // if the object shows just right side
+                        cena[i].setLargura(cena[j].getX() + cena[i].getX()); // if the object shows just right side
                     }
                 }
             }
@@ -148,7 +148,7 @@ void Cena::sortOverlap(){
     mergeSort(cena, 0, cena.get_size()); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
     sortOverlap();
 
-    mergeSortbyId(cena, 0, cena.get_size());
+    mergeSortById(cena, 0, cena.get_size());
 
     
   };
