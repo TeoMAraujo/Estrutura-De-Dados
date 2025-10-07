@@ -56,7 +56,7 @@ int vector<T>::get_size() const {
     return this->size;
 }
 
-template <class T>
+template <typename T>
 void vector<T>::insert(int pos, T obj) {
     if (pos < 0 || pos > this->size) {
         throw std::out_of_range("invalid position");
@@ -74,7 +74,7 @@ void vector<T>::insert(int pos, T obj) {
     delete[] temp;
 }
 
-template <class T>
+template <typename T>
 void vector<T>::remove(int pos) {
     if (pos < 0 || pos >= this->size) {
         throw std::out_of_range("invalid position");
