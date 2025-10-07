@@ -17,6 +17,8 @@ public:
   int getTempo() const;  
   float getX() const;
   float getY() const;
+  float setX();
+  float setY();
   float getLargura() const;
 };
 

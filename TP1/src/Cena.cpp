@@ -8,7 +8,7 @@ vector<objeto>& Cena::getCena() {
 
   void Cena::addObject(const float &x, const float &y,
                               const float &largura) {
-    objeto temp(objetos.size(),0, x, y, largura);
+    objeto temp(objetos.get_size(),0, x, y, largura);
 // O VPL N TEM NENHUM CASO MAS CASO OUVESSE UM OBJETO ADICIONADO DPS IA DA O CACETE, mas ia ta la
     vector<objeto> newObject;
     newObject.push_back(temp);    // Creates the first movement
@@ -66,7 +66,7 @@ vector<objeto>& Cena::getCena() {
       }
   }
 
-void::Cen::mergeSort(vector<objeto> &arr, int left, int right){
+void::Cena::mergeSort(vector<objeto> &arr, int left, int right){
   if (left <= right)
     return;
 
@@ -84,9 +84,9 @@ void Cena::sortOverlap(){
                     continue; //when theres nothing to change
                 }     
                 else{ 
-                    if((cena[j].getX + cena[j].getLargura() - 1) < (cena[i].getX() + cena[i].getLargura() - 1)){ //if the bhind object exceeds size
+                    if((cena[j].getX() + cena[j].getLargura() - 1) < (cena[i].getX() + cena[i].getLargura() - 1)){ //if the bhind object exceeds size
                         objeto temp = cena[i];
-                        temp.setX(cena[j].getX + cena[j].getLargura() - 1); //after the final of the front obj
+                        temp.setX(cena[j].getX() + cena[j].getLargura() - 1); //after the final of the front obj
                         temp.setLargura((cena[i].getX() + cena[i].getLargura() - 1) - (cena[j].getX + cena[j].getLargura() - 1))
                         cena.insert(i+1, temp);
                         cena[i].setLargura(cena[j].getX()); //after the final of the front obj
@@ -101,7 +101,7 @@ void Cena::sortOverlap(){
                     break; //when theres nothing to change
                 }
                 else{
-                    if(cena[j].getX() + largura - 1) >= cena[i].getX() + cena[i].getLargura()){ //if inside of other vector 
+                    if((cena[j].getX() + largura - 1) >= (cena[i].getX() + cena[i].getLargura())){ //if inside of other vector 
                         cena.remove(i)//if the size size +largura is less than vertor remove ]
                         break;
                     }
