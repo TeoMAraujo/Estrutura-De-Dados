@@ -34,48 +34,86 @@ vector<objeto>& Cena::getCena() {
   }
 
 
-  void::Cena::merge(vector<int>& arr, int left, int mid, int right){
+void Cena::cenaSortTime(const int &time) {
+    cena.clear();
+    for (int i = 0; i < objetos.get_size(); i++) {
+        for (int j = objetos[i].get_size() - 1; j >= 0; j--) {
+            if (objetos[i][j].getTempo() <= time) {
+                cena.push_back(objetos[i][j]);
+                break;
+            }
+        }
+    }
+}
+
+void Cena::merge(vector<objeto>& arr, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
-    //create temp vector with half size of arr
-    vector<int> L(n1), R(n2);
-
-    for (int i = 0; i < n1; i++)
-      L.push_back(arr[left + i]);
-    for (int j = 0; j < n2; j++)
-      R.push_back(arr[mid + 1 + j]);
+    vector<objeto> L, R;
+    for (int i = 0; i < n1; i++) L.push_back(arr[left + i]);
+    for (int j = 0; j < n2; j++) R.push_back(arr[mid + 1 + j]);
 
     int i = 0, j = 0;
     int k = left;
 
-    while (i < n1 && j < n2){ //iterete over both vectors
-      if (L[i] <= R[j]){ // because the previous vectors are sorted, we can just compare the first element of each vector
-        arr[k] = L[i];
-        i++;
-      }else{
-        arr[k] = R[j];
-        j++;
-      }
-      k++;
-    }
-      if (i < n1){ //if there are still elements in L, add them to arr
-        arr[k] = L[i];
-        i++;
+    while (i < n1 && j < n2) {
+        if (L[i].getY() <= R[j].getY()) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
         k++;
-      }
-  }
+    }
 
-void::Cena::mergeSort(vector<objeto> &arr, int left, int right){
-  if (left <= right)
-    return;
-
-  int mid = left + ((right - left) / 2);
-  mergeSort(arr(), left, mid); // if array was 0,1,2,3,4,5,6,7 goes to 0,1,2,3
-  mergeSort(arr(), mid + 1, right);   // then goes to 4,5,6,7
-  merge(arr(), left, mid, right); //every subset is sorted and merged back together
+    while (i < n1) { arr[k++] = L[i++]; }
+    while (j < n2) { arr[k++] = R[j++]; }
 }
 
+void Cena::mergeSort(vector<objeto>& arr, int left, int right) {
+    if (left >= right) return;
+    int mid = left + (right - left) / 2;
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid + 1, right);
+    merge(arr, left, mid, right);
+}
+
+void Cena::mergeById(vector<objeto>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    vector<objeto> L, R;
+    for (int i = 0; i < n1; i++) L.push_back(arr[left + i]);
+    for (int j = 0; j < n2; j++) R.push_back(arr[mid + 1 + j]);
+
+    int i = 0, j = 0;
+    int k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i].getId() <= R[j].getId()) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) { arr[k++] = L[i++]; }
+    while (j < n2) { arr[k++] = R[j++]; }
+}
+
+void Cena::mergeSortById(vector<objeto>& arr, int left, int right) {
+    if (left >= right) return;
+    int mid = left + (right - left) / 2;
+    mergeSortById(arr, left, mid);
+    mergeSortById(arr, mid + 1, right);
+    mergeById(arr, left, mid, right);
+}
+  
 void Cena::sortOverlap(){
     for(int i = 1; i < cena.get_size(); i++){
         for(int j = 0; i < j; j++){ //compare the first term until it own term

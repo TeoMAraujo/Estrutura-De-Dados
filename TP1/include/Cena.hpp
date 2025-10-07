@@ -19,9 +19,12 @@ public:
 
     // Sorting methods
     void cenaSortTime(const int &time);
-    void merge(vector<int>& arr, int left, int mid, int right);
+    void merge(vector<objeto>& arr, int left, int mid, int right);
     void mergeSort(vector<objeto>& arr, int left, int right);
+    void mergeById(vector<objeto>& arr, int left, int mid, int right);
+    void mergeSortById(vector<objeto>& arr, int left, int right);
     void sortOverlap();
+
     void gerarCena(const int &time); //all the previous sorts concatenates into major function
 };
 
