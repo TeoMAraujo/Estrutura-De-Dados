@@ -1,5 +1,13 @@
 #include "Objeto.hpp"
 
+objeto::objeto() {
+    this->id = 0;
+    this->tempo = 0;
+    this->x = 0.0;
+    this->y = 0.0;
+    this->largura = 0;
+}
+
 objeto::objeto(const int &id, const int &tempo, const float &x, const float &y, const float &largura) {
     this->id = id;
     this->tempo = tempo;
