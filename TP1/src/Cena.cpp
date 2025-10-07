@@ -84,7 +84,7 @@ void Cena::sortOverlap(){
                     continue; //when theres nothing to change
                 }     
                 else{ 
-                    if((cena[j].getX() + cena[j].getLargura() - 1) < (cena[i].getX() + cena[i].getLargura() - 1)){ //if the bhind object exceeds size
+                    if((cena[j].getX() + cena[j].getLargura() - 1) > (cena[i].getX() + cena[i].getLargura() - 1)){ //if the behind object exceeds size
                         objeto temp = cena[i];
                         temp.setX(cena[j].getX() + cena[j].getLargura() - 1); //after the final of the front obj
                         temp.setLargura((cena[i].getX() + cena[i].getLargura() - 1) - (cena[j].getX + cena[j].getLargura() - 1))
@@ -97,7 +97,7 @@ void Cena::sortOverlap(){
                 } 
             } 
             else{ 
-                if((cena[j].getX() + largura - 1) <= cena[i].getX()){
+                if((cena[j].getX() + cena[j].geLargura() - 1) <= cena[i].getX()){
                     break; //when theres nothing to change
                 }
                 else{
@@ -107,7 +107,7 @@ void Cena::sortOverlap(){
                     }
                     else{
                         cena[i].setX(cena[j].getX())
-                        cena[i].setLargura(cena[j].getX()+ cena[i].getX())//need to resize the vector X to cena[j].getX() + largura -1, and change largura
+                        cena[i].setLargura(cena[j].getX() + cena[i].getX())//need to resize the vector X to cena[j].getX() + largura -1, and change largura
                     }
                 }
             }

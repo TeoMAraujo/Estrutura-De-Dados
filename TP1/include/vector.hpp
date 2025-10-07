@@ -19,7 +19,7 @@ public:
     // functions
     void insert(int pos, T obj);
     void remove(int pos); 
-    void push_back(T obj);I
+    void push_back(T obj);
     void push_front(T obj);
     void pop_back();
     void pop_front();
