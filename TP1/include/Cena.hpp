@@ -15,7 +15,7 @@ public:
     //kinda getters and setters
     vector<objeto>& getCena();
     void addObject(const float &x, const float &y, const float &largura);
-    void addMovement(const int &object, const int &tempo, const float &x, const float &y, const float &largura);
+    void addMovement(const int &object, const int &tempo, const float &x, const float &y);
 
     // Sorting methods
     void cenaSortTime(const int &time);

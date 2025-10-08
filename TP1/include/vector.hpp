@@ -14,6 +14,7 @@ public:
     // Cinstructor and destructor
     vector();
     vector(int size);
+    vector(const vector<T>& other); // Copy constructor
     ~vector();
     
     // getter
@@ -30,6 +31,7 @@ public:
 
     // operators
     T& operator[](int index);
+    vector<T>& operator=(const vector<T>& other); // Assignment operator
 };
 
 // implementation
@@ -44,6 +46,19 @@ template <class T>
 vector<T>::vector(int size) {
     this->ptr = new T[size];
     this->size = size;
+}
+
+template <class T>
+vector<T>::vector(const vector<T>& other) {
+    size = other.size;
+    if (size > 0) {
+        ptr = new T[size];
+        for (int i = 0; i < size; ++i) {
+            ptr[i] = other.ptr[i];
+        }
+    } else {
+        ptr = nullptr;
+    }
 }
 
 template <class T>
@@ -130,4 +145,21 @@ T& vector<T>::operator[](int index) {
     return this->ptr[index];
 }
 
-#endif 
+template <class T>
+vector<T>& vector<T>::operator=(const vector<T>& other) {
+    if (this != &other) {
+        delete[] ptr;
+        size = other.size;
+        if (size > 0) {
+            ptr = new T[size];
+            for (int i = 0; i < size; ++i) {
+                ptr[i] = other.ptr[i];
+            }
+        } else {
+            ptr = nullptr;
+        }
+    }
+    return *this;
+}
+
+#endif

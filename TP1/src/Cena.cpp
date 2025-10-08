@@ -2,6 +2,19 @@
 #include "Objeto.hpp"
 #include "vector.hpp"
 
+#define BEHIND_LEFT  (cena[j].getX())                                      
+#define BEHIND_RIGHT (cena[j].getX() + cena[j].getLargura()) 
+#define FRONT_LEFT   (cena[i].getX())                          
+#define FRONT_RIGHT  (cena[i].getX() + cena[i].getLargura())  
+ 
+
+// vou até sair do inglês aq  
+ // maybe até seria uma prática melhor, mas uma área que pretendo trabalhar é embarcados, coisas que 
+ // normalmente o mínimo manejamento de memória faz diferença, já que, inicialmente afim de melhorar                           
+// a legibilidade eu substitui os statemems por floats, porém isso ocuparia 64bits, porém bolei uma
+ // solução pré compilador que poderia melhorar a legibiilidade nesse caso, isso é mais um teste msm, 
+                                                              // nem precisaria
+
 
 Cena::Cena() {
     // Constructor can be empty if there's no special setup to do.
@@ -22,8 +35,9 @@ vector<objeto>& Cena::getCena() {
 
   }
   void Cena::addMovement(const int &object, const int &tempo,
-                                const float &x, const float &y,
-                                const float &largura) {
+                                const float &x, const float &y) {
+    // Get the largura from the most recent movement of this object
+    float largura = objetos[object][objetos[object].get_size() - 1].getLargura();
     objeto temp(object, tempo, x, y, largura);
     objetos[object].push_back(temp);
   }
@@ -107,55 +121,65 @@ void Cena::mergeSortById(vector<objeto>& arr, int left, int right) {
     mergeSortById(arr, mid + 1, right);
     mergeById(arr, left, mid, right);
 }
-  
 void Cena::sortOverlap(){
+    // Objects are sorted by Y coordinate (front to back)
+    // Objects with smaller Y are in front and can hide objects behind them
     for(int i = 0; i < cena.get_size(); i++){
-        for(int j = cena.get_size(); i <= j; j--){ //compare the first term until it own term
-            if (cena[j].getX() > cena[i].getX()){ //that implies that somepart it will be visible
-                if(cena[j].getX() >= (cena[i].getX() + cena[i].getLargura() - 1)){
-                    continue; //when theres nothing to change
-                }     
-                else{ 
-                    if((cena[j].getX() + cena[j].getLargura() - 1) > (cena[i].getX() + cena[i].getLargura() - 1)){ //if the behind object exceeds size
-                        objeto temp = cena[i];
-                        temp.setX(cena[j].getX() + cena[j].getLargura() - 1); //after the final of the front obj
-                        temp.setLargura((cena[i].getX() + cena[i].getLargura() - 1) - (cena[j].getX() + cena[j].getLargura() - 1));
-                        cena.insert(i+1, temp);
-                        cena[i].setLargura(cena[j].getX()); //after the final of the front obj
-                    }
-                    else{
-                        cena[i].setLargura(cena[j].getX()); //if the object shows just left side 
-                    }
-                } 
-            } 
-            else{ 
-                if((cena[j].getX() + cena[j].getLargura() - 1) <= cena[i].getX()){
-                    break; //when theres nothing to change
+        for(int j = i+1; j < cena.get_size(); j++){
+            float frontLeft = cena[i].getX();
+            float frontRight = cena[i].getX() + cena[i].getLargura();
+            float backLeft = cena[j].getX();
+            float backRight = cena[j].getX() + cena[j].getLargura();
+            
+            // Check if objects overlap horizontally
+            if (frontLeft < backRight && backLeft < frontRight) {
+                // Objects overlap - front object (i) occludes back object (j)
+                
+                if (backLeft >= frontLeft && backRight <= frontRight) {
+                    // Back object is completely hidden
+                    cena.remove(j);
+                    j--;
                 }
-                else{
-                    if((cena[j].getX() + cena[j].getLargura() - 1) >= (cena[i].getX() + cena[i].getLargura())){ //if inside of other vector 
-                        cena.remove(i);//if the size size +largura is less than vertor remove ]
-                        break;
-                    }
-                    else{
-                        cena[i].setX(cena[j].getX());
-                        cena[i].setLargura(cena[j].getX() + cena[i].getX()); // if the object shows just right side
-                    }
+                else if (backLeft < frontLeft && backRight > frontRight) {
+                    // Front object splits back object into two parts
+                    // Left part: [backLeft, frontLeft]
+                    float leftWidth = frontLeft - backLeft;
+                    cena[j].setLargura(leftWidth);
+                    
+                    // Right part: [frontRight, backRight]
+                    float rightWidth = backRight - frontRight;
+                    objeto rightPart(cena[j].getId(), cena[j].getTempo(), frontRight, cena[j].getY(), rightWidth);
+                    cena.insert(j+1, rightPart);
+                }
+                else if (backLeft < frontLeft && backRight <= frontRight) {
+                    // Back object extends to the left of front object
+                    // Keep only the left visible part
+                    float newWidth = frontLeft - backLeft;
+                    cena[j].setLargura(newWidth);
+                }
+                else if (backLeft >= frontLeft && backRight > frontRight) {
+                    // Back object extends to the right of front object
+                    // Keep only the right visible part
+                    float newWidth = backRight - frontRight;
+                    cena[j].setX(frontRight);
+                    cena[j].setLargura(newWidth);
                 }
             }
         }
     }
 }
 
-
-  void Cena::gerarCena(const int &time) {
+void Cena::gerarCena(const int &time) {
     cena.clear();
     cenaSortTime(time); //make a new scene based on time
-    mergeSort(cena, 0, cena.get_size()); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
-    sortOverlap();
-
-    mergeSortById(cena, 0, cena.get_size());
-
-    
+    if (cena.get_size() > 0) {
+        mergeSort(cena, 0, cena.get_size() - 1); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
+        sortOverlap();
+        mergeSortById(cena, 0, cena.get_size() - 1);
+    }
   };
 
+
+
+
+  
