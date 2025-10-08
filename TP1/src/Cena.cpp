@@ -128,30 +128,44 @@ void Cena::sortOverlap(){
                 }  
                 else{ // BEHIND_RIGHT > FRONT_LEFT
                     if(BEHIND_RIGHT <= FRONT_RIGHT){
-                        cena[i].setLargura(FRONT_LEFT);
+                        cena[j].setLargura(FRONT_LEFT - BEHIND_LEFT);
                     }else{ // BEHIND_RIGHT > FRONT_RIGHT
-                        objeto temp(i, cena[i].getTempo(),FRONT_RIGHT, cena[i].getY(), BEHIND_RIGHT - FRONT_RIGHT);
-                        cena.insert(i+1, temp);
+                        objeto temp(cena[j].getId(), cena[j].getTempo(), FRONT_RIGHT, cena[j].getY(), BEHIND_RIGHT - FRONT_RIGHT);
+                        cena.insert(j+1, temp);
                         
-                        cena[i].setLargura(FRONT_LEFT);
+                        cena[j].setLargura(FRONT_LEFT - BEHIND_LEFT);
                     }
                 }
             }
             else{ // BEHIND_LEFT >= FRONT_LEFT
-                if(BEHIND_RIGHT <= FRONT_LEFT){
+                if(BEHIND_LEFT >= FRONT_RIGHT){
                     continue;
                 }  
-                else{ // BEHIND_RIGHT > FRONT_LEFT
+                else{ // BEHIND_LEFT < FRONT_RIGHT
                     if(BEHIND_RIGHT <= FRONT_RIGHT){
-                        cena.remove(i);
-                        j--
-                    }else{ // BEHIND_RIGHT > FRONT_LEFT
-                        cena[i].setLargura(BEHIND_RIGHT - FRONT_RIGHT);
-                        cena[i].setX(FRONT_RIGHT);    
+                        // Instead of removing completely, create a small visible portion
+                        if (BEHIND_RIGHT > BEHIND_LEFT) {
+                            cena[j].setLargura(BEHIND_RIGHT - BEHIND_LEFT);
+                            cena[j].setX(BEHIND_LEFT);
+                        } else {
+                            cena.remove(j);
+                            j--;
+                        }
+                    }else{ // BEHIND_RIGHT > FRONT_RIGHT
+                        cena[j].setLargura(BEHIND_RIGHT - FRONT_RIGHT);
+                        cena[j].setX(FRONT_RIGHT);    
                     }
                 }
             }
         }
+    }
+    
+    // Apply coordinate transformation to center objects around origin
+    for(int i = 0; i < cena.get_size(); i++){
+        float currentX = cena[i].getX();
+        float width = cena[i].getLargura();
+        // Center the object around its width midpoint
+        cena[i].setX(currentX - (width / 2.0));
     }
 }
 
