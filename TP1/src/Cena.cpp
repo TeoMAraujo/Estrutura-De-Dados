@@ -63,7 +63,7 @@ void Cena::merge(vector<objeto>& arr, int left, int mid, int right) {
     int k = left;
 
     while (i < n1 && j < n2) {
-        if (L[i].getY() <= R[j].getY()) {
+        if (L[i].getY() >= R[j].getY()) { // Fixed: front-to-back sorting
             arr[k] = L[i];
             i++;
         } else {
@@ -135,7 +135,6 @@ void Cena::sortOverlap(){
                         
                         cena[j].setLargura(FRONT_CENTER - BEHIND_CENTER);
                     }
-                    }
                 }
             }
             else{ // BEHIND_CENTER
@@ -146,14 +145,9 @@ void Cena::sortOverlap(){
                 else{ // BEHIND_CENTER
                 // < FRONT_FINALX
                     if(BEHIND_FINALX <= FRONT_FINALX){
-                        // Instead of removing completely, create a small visible portion
-                        if (BEHIND_FINALX > BEHIND_CENTER) {
-                            cena[j].setLargura(BEHIND_FINALX - BEHIND_CENTER);
-                            cena[j].setX(BEHIND_CENTER);
-                        } else {
-                            cena.remove(j);
-                            j--;
-                        }
+                        // Behind object is completely occluded
+                        cena.remove(j);
+                        j--;
                     }else{ // BEHIND_FINALX > FRONT_FINALX
                         cena[j].setLargura(BEHIND_FINALX - FRONT_FINALX);
                         cena[j].setX(FRONT_FINALX);    
@@ -162,9 +156,11 @@ void Cena::sortOverlap(){
             }
         }
     }
-    
-    // Apply coordinate transformation to center objects around origin
-    }
+    for (int i = 0; i < cena.get_size(); i++){
+        cena[i].setLargura(cena[i].getX() + cena[i].getLargura()); //transforming into finalx
+    }   
+}
+
 
 
 
@@ -173,9 +169,11 @@ void Cena::sortOverlap(){
   void Cena::gerarCena(const int &time) {
     cena.clear();
     cenaSortTime(time); //make a new scene based on time
-    mergeSort(cena, 0, cena.get_size() - 1); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
-    sortOverlap();
-    mergeSortById(cena, 0, cena.get_size() - 1);
+    if (cena.get_size() > 0) {
+        mergeSort(cena, 0, cena.get_size() - 1); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
+        sortOverlap();
+        mergeSortById(cena, 0, cena.get_size() - 1);
+    }
 
 
   };

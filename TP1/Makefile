@@ -7,8 +7,8 @@ SOURCES = $(wildcard $(SRC)/*.cpp)
 SOURCES := $(filter-out $(SRC)/vector.cpp,$(SOURCES))
 OBJECTS = $(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SOURCES))
 
-CXX = g++
-CXXFLAGS = -I$(INC) -Wall -Wextra -std=c++11
+CXX = gcc
+CXXFLAGS = -I$(INC) -Wall -Wextra -std=c++11 -lstdc++
 
 all: $(BIN)/tp1.out
 
