@@ -4,8 +4,8 @@
 #include "Cena.hpp"
 
 int main() {
-    char token;
     Cena principal;
+    char token;
     int object, time;
     double x, y, largura;
 

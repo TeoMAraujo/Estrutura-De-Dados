@@ -66,7 +66,7 @@ void Cena::merge(vector<objeto>& arr, int left, int mid, int right) {
     int k = left;
 
     while (i < n1 && j < n2) {
-        if (L[i].getY() >= R[j].getY()) { // Fixed: front-to-back sorting
+        if (L[i].getY() <= R[j].getY()) { // Lower Y values first (back-to-front priority)
             arr[k] = L[i];
             i++;
         } else {
@@ -121,47 +121,67 @@ void Cena::mergeSortById(vector<objeto>& arr, int left, int right) {
     mergeSortById(arr, mid + 1, right);
     mergeById(arr, left, mid, right);
 }
-        // NEEDS A NEGATIVE LOOK
 void Cena::sortOverlap(){
     for(int i = 0; i < cena.get_size(); i++){
-        for(int j = i+1; j <cena.get_size(); j++){ //compare the first term until it own term
-            if (BEHIND_CENTER < FRONT_CENTER){ //that implies that somepart it will be visible
-                if(BEHIND_FINALX <= FRONT_CENTER){
-                    continue;
-                }  
-                else{ // BEHIND_FINALX > FRONT_CENTER
-                    if(BEHIND_FINALX <= FRONT_FINALX){
-                        cena[j].setLargura(FRONT_CENTER - BEHIND_CENTER);
-                    }else{ // BEHIND_FINALX > FRONT_FINALX
-                        objeto temp(cena[j].getId(), cena[j].getTempo(), FRONT_FINALX, cena[j].getY(), BEHIND_FINALX - FRONT_FINALX);
-                        cena.insert(j+1, temp);
-                        
-                        cena[j].setLargura(FRONT_CENTER - BEHIND_CENTER);
-                    }
-                }
+        for(int j = i+1; j < cena.get_size(); j++){
+            // Calculate actual boundaries using center coordinates
+            double behind_center = cena[j].getX();
+            double behind_half_width = cena[j].getLargura() / 2.0;
+            double behind_start = behind_center - behind_half_width;
+            double behind_end = behind_center + behind_half_width;
+            
+            double front_center = cena[i].getX();
+            double front_half_width = cena[i].getLargura() / 2.0;
+            double front_start = front_center - front_half_width;
+            double front_end = front_center + front_half_width;
+            
+            // Check if there's any overlap
+            if (behind_end <= front_start || behind_start >= front_end) {
+                continue; // No overlap
             }
-            else{ // BEHIND_CENTER
-            // >= FRONT_CENTER
-                if(BEHIND_CENTER >= FRONT_FINALX){
-                    continue;
-                }  
-                else{ // BEHIND_CENTER
-                // < FRONT_FINALX
-                    if(BEHIND_FINALX <= FRONT_FINALX){
-                        // Behind object is completely occluded
-                        cena.remove(j);
-                        j--;
-                    }else{ // BEHIND_FINALX > FRONT_FINALX
-                        cena[j].setLargura(BEHIND_FINALX - FRONT_FINALX);
-                        cena[j].setX(FRONT_FINALX);    
-                    }
+            
+            // There is overlap - handle different cases
+            if (behind_start < front_start) {
+                // Behind object starts before front object
+                if (behind_end <= front_end) {
+                    // Behind object ends before or at front object end
+                    // Truncate behind object to end where front starts
+                    double new_width = front_start - behind_start;
+                    double new_center = behind_start + new_width / 2.0;
+                    cena[j].setX(new_center);
+                    cena[j].setLargura(new_width);
+                } else {
+                    // Behind object extends past front object
+                    // Split behind object into two parts
+                    double left_width = front_start - behind_start;
+                    double left_center = behind_start + left_width / 2.0;
+                    double right_width = behind_end - front_end;
+                    double right_center = front_end + right_width / 2.0;
+                    
+                    objeto temp(cena[j].getId(), cena[j].getTempo(), right_center, cena[j].getY(), right_width);
+                    cena.insert(j+1, temp);
+                    
+                    // Update original behind object (left part)
+                    cena[j].setX(left_center);
+                    cena[j].setLargura(left_width);
+                }
+            } else {
+                // Behind object starts at or after front object start
+                if (behind_end <= front_end) {
+                    // Behind object is completely inside front object - remove it
+                    cena.remove(j);
+                    j--; // Adjust index after removal
+                } else {
+                    // Behind object extends past front object
+                    // Move behind object to start where front ends
+                    double new_width = behind_end - front_end;
+                    double new_center = front_end + new_width / 2.0;
+                    cena[j].setX(new_center);
+                    cena[j].setLargura(new_width);
                 }
             }
         }
     }
-    for (int i = 0; i < cena.get_size(); i++){
-        cena[i].setLargura(cena[i].getX() + cena[i].getLargura()); //transforming into finalx
-    }   
 }
 
 
@@ -172,13 +192,23 @@ void Cena::sortOverlap(){
   void Cena::gerarCena(const int &time) {
     cena.clear();
     cenaSortTime(time); //make a new scene based on time
+    
     if (cena.get_size() > 0) {
         mergeSort(cena, 0, cena.get_size() - 1); //then sorts all Y, basically checking who's is first, then placing overlaping all the next cases, ocupping atrbuing it to a new object spaceOverlap, where its stores x1 and x2, where its sets boundries, that the next objects cannot occupy 
         sortOverlap();
         mergeSortById(cena, 0, cena.get_size() - 1);
     }
-
-
+    
+    // Convert from center+width to start+end coordinates for output
+    for (int i = 0; i < cena.get_size(); i++){
+        double center = cena[i].getX();
+        double width = cena[i].getLargura();
+        double start_x = center - width / 2.0;
+        double end_x = center + width / 2.0;
+        
+        cena[i].setX(start_x); // Set start coordinate
+        cena[i].setLargura(end_x); // Set end coordinate in largura field for output
+    }   
   };
 
 
