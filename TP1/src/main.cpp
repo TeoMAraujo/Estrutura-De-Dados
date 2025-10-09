@@ -7,7 +7,7 @@ int main() {
     char token;
     Cena principal;
     int object, time;
-    float x, y, largura;
+    double x, y, largura;
 
     // This loop structure correctly reads a token and continues
     // as long as there is input to read.

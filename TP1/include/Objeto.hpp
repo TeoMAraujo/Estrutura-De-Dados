@@ -7,23 +7,23 @@ class objeto {
 private:
     int id;
     int tempo;
-    float x, y;
-    float largura;
+    double x, y;
+    double largura;
 
 public:
     objeto();
-    objeto(const int &id, const int &tempo, const float &x, const float &y,
-         const float &largura); // all arguments are in & to use less memory
+    objeto(const int &id, const int &tempo, const double &x, const double &y,
+         const double &largura); // all arguments are in & to use less memory
   
     int getId() const; 
     int getTempo() const;  
-    float getX() const;
-    float getY() const;
-    float getLargura() const;
+    double getX() const;
+    double getY() const;
+    double getLargura() const;
 
-    void setX(float X);
-    void setY(float Y);
-    void setLargura(float L);
+    void setX(double X);
+    void setY(double Y);
+    void setLargura(double L);
 };
 
 #endif // OBJETO_HPP

@@ -8,7 +8,7 @@ objeto::objeto() {
     this->largura = 0;
 }
 
-objeto::objeto(const int &id, const int &tempo, const float &x, const float &y, const float &largura) {
+objeto::objeto(const int &id, const int &tempo, const double &x, const double &y, const double &largura) {
     this->id = id;
     this->tempo = tempo;
     this->x = x;
@@ -20,14 +20,14 @@ int objeto::getId() const { return id; }
 
 int objeto::getTempo() const { return tempo; }
 
-float objeto::getX() const { return x; }
+double objeto::getX() const { return x; }
 
-float objeto::getY() const { return y; }
+double objeto::getY() const { return y; }
 
-float objeto::getLargura() const { return largura; }
+double objeto::getLargura() const { return largura; }
 
-void objeto::setX(float X) { x = X; }
+void objeto::setX(double X) { x = X; }
 
-void objeto::setY(float Y) { y = Y; }
+void objeto::setY(double Y) { y = Y; }
 
-void objeto::setLargura(float L) { largura = L; }
+void objeto::setLargura(double L) { largura = L; }
