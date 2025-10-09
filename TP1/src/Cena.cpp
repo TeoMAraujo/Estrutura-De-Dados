@@ -24,8 +24,8 @@ vector<objeto>& Cena::getCena() {
 
   void Cena::addObject(const double &x, const double &y,
                               const double &largura) {
-    objeto temp(objetos.get_size(),0, x, y, largura);
-// O VPL N TEM NENHUM CASO MAS CASO OUVESSE UM OBJETO ADICIONADO DPS IA DA O CACETE, mas ia ta la
+    objeto temp(objetos.get_size(), 0, x, y, largura); // ID matches array index (0-based)
+// O VPL N TEM NENHUM CASO MAS CASO OUVESSE UM OBJETO ADICIONADO, DPS IA DA O CACETE, mas ia ta la
     vector<objeto> newObject;
     newObject.push_back(temp);    // Creates the first movement
     objetos.push_back(newObject); // adds an object to the list
@@ -33,8 +33,9 @@ vector<objeto>& Cena::getCena() {
   }
   void Cena::addMovement(const int &object, const int &tempo,
                                 const double &x, const double &y) {
-    // Get the largura from the most recent movement of this object
+
     double largura = objetos[object][objetos[object].get_size() - 1].getLargura();
+    
     objeto temp(object, tempo, x, y, largura);
     objetos[object].push_back(temp);
   }
@@ -42,12 +43,14 @@ vector<objeto>& Cena::getCena() {
 void Cena::cenaSortTime(const int &time) {
     cena.clear();
     for (int i = 0; i < objetos.get_size(); i++) {
-        for (int j = objetos[i].get_size() - 1; j >= 0; j--) {
-            if (objetos[i][j].getTempo() <= time) { 
-                cena.push_back(objetos[i][j]);
-                break;
+        // Find the most recent movement at or before the given time
+        int selectedIndex = 0; // Default to original object creation (index 0)
+        for (int j = 0; j < objetos[i].get_size(); j++) {
+            if (objetos[i][j].getTempo() <= time) {
+                selectedIndex = j; // Keep updating to find the most recent valid movement
             }
         }
+        cena.push_back(objetos[i][selectedIndex]);
     }
 }
 
