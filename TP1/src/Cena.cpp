@@ -185,9 +185,8 @@ void Cena::sortOverlap(){
 
   void Cena::gerarCena(const int &time) {
     cena.clear();
-    cenaSortTime(time); //make a new scene based on time
-    
     if (cena.get_size() > 0) { //debug
+        cenaSortTime(time); //make a new scene based on time
         mergeSort(cena, 0, cena.get_size() - 1); //then sorts all Y, basically checking who's is first,
         sortOverlap();  // core algorithm function, where its sets boundries, that the next objects cannot occupy 
         mergeSortById(cena, 0, cena.get_size() - 1);
