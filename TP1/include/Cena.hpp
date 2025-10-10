@@ -25,7 +25,7 @@ public:
     void mergeSortById(vector<objeto>& arr, int left, int right);
     void sortOverlap();
 
-    void gerarCena(const int &time); //all the previous sorts concatenates into major function
+    void gerarCena(const int &time); //all the previous sorts concatenates into a major function
 };
 
-#endif // CENA_HPP
+#endif 

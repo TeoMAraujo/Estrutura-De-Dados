@@ -11,10 +11,10 @@ private:
     int size;
 
 public:
-    // Cinstructor and destructor
+    // constructor and destructor
     vector();
     vector(int size);
-    vector(const vector<T>& other); // Copy constructor
+    vector(const vector<T>& other); // copy constructor
     ~vector();
     
     // getter
@@ -31,7 +31,7 @@ public:
 
     // operators
     T& operator[](int index);
-    vector<T>& operator=(const vector<T>& other); // Assignment operator
+    vector<T>& operator=(const vector<T>& other); // assignment operator
 };
 
 // implementation
@@ -72,18 +72,18 @@ int vector<T>::get_size() const {
 }
 
 template <typename T>
-void vector<T>::insert(int pos, T obj) {
+void vector<T>::insert(int pos, T obj) { 
     if (pos < 0 || pos > this->size) {
         throw std::out_of_range("invalid position");
     }
-    T* temp = this->ptr;
-    this->ptr = new T[this->size + 1];
+    T* temp = this->ptr; //points to the vector, making the values stores temporaly
+    this->ptr = new T[this->size + 1]; // change the adress whit a newer size
     for (int i = 0; i < pos; ++i) {
-        this->ptr[i] = temp[i];
+        this->ptr[i] = temp[i]; // copies values to the new &
     }
-    this->ptr[pos] = obj;
+    this->ptr[pos] = obj; //insert
     for (int i = pos; i < this->size; ++i) {
-        this->ptr[i + 1] = temp[i];
+        this->ptr[i + 1] = temp[i]; // copie the last elements of temp
     }
     ++this->size;
     delete[] temp;
@@ -95,7 +95,7 @@ void vector<T>::remove(int pos) {
         throw std::out_of_range("invalid position");
     }
     T* temp = this->ptr;
-    this->ptr = new T[this->size - 1];
+    this->ptr = new T[this->size - 1]; // same logic as insert, but the oposite
     for (int i = 0; i < pos; ++i) {
         this->ptr[i] = temp[i];
     }
@@ -107,38 +107,38 @@ void vector<T>::remove(int pos) {
 }
 
 template <class T>
-void vector<T>::push_back(T obj) {
+void vector<T>::push_back(T obj) { // pushes a variable to last index
     this->insert(this->size, obj);
 }
 
 template <class T>
-void vector<T>::push_front(T obj) {
+void vector<T>::push_front(T obj) { // pushes a variable to the first index
     this->insert(0, obj);
 }
 
 template <class T>
-void vector<T>::pop_back() {
+void vector<T>::pop_back() { // remove the last index
     if (this->size > 0) {
         this->remove(this->size - 1);
     }
 }
 
 template <class T>
-void vector<T>::pop_front() {
+void vector<T>::pop_front() { // remove the first index
     if (this->size > 0) {
         this->remove(0);
     }
 }
 
 template <class T>
-void vector<T>::clear() {
+void vector<T>::clear() { //cleans vector
     delete[] this->ptr;
     this->ptr = nullptr;
     this->size = 0;
 }
 
 template <class T>
-T& vector<T>::operator[](int index) {
+T& vector<T>::operator[](int index) { //to be able to acess variables
     if (index < 0 || index >= this->size) {
         throw std::out_of_range("invalid index");
     }
@@ -146,7 +146,7 @@ T& vector<T>::operator[](int index) {
 }
 
 template <class T>
-vector<T>& vector<T>::operator=(const vector<T>& other) {
+vector<T>& vector<T>::operator=(const vector<T>& other) { // = operator
     if (this != &other) {
         delete[] ptr;
         size = other.size;

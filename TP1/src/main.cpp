@@ -9,23 +9,21 @@ int main() {
     int object, time;
     double x, y, largura;
 
-    // This loop structure correctly reads a token and continues
-    // as long as there is input to read.
     while (std::cin >> token) {
         switch (token) {
             case 'O':
-                // For 'O', format is: O objectId x y largura
+                // O objectId x y largura
                 std::cin >> object >> x >> y >> largura;
-                principal.addObject(x, y, largura); // Object ID is sequential, not from input
+                principal.addObject(x, y, largura);
                 break;
             case 'M':
-                // For 'M', format is: M movementId objectId x y
+                // M movementId objectId x y
                 int movementId;
                 std::cin >> movementId >> object >> x >> y;
-                principal.addMovement(object, movementId, x, y); // Use movementId as time
+                principal.addMovement(object, movementId, x, y); 
                 break;
             case 'C':
-                // For 'C', we only need the time
+                // C time
                 std::cin >> time;
                 principal.gerarCena(time);
                 vector<objeto>& ref = principal.getCena();
@@ -38,6 +36,5 @@ int main() {
         }
     }
 
-    // return 0 is now correctly placed outside the loop.
     return 0; 
 }
