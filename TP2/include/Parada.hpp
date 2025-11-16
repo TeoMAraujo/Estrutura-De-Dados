@@ -11,7 +11,11 @@ struct parada {
   coord localizacao;
   stop tipo;
   int passageiro;
-  parada(localizacao l, stop t, int p);
+  parada(localizacao l, stop t, int p){
+    this->localizacao = l;
+    this->tipo = t;
+    this->passageiro = p;
+  }
 };
 
 

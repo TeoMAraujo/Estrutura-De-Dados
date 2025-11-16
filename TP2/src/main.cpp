@@ -21,6 +21,7 @@ int main {
         percursos.addDemanda(p);
     }
 
+    percursos.criaCorridas();
  
 //tempo de conclusão da corrida
 // distancia total percorrida

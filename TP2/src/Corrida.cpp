@@ -1,16 +1,19 @@
 #include "../include/Corrida.hpp"
 
 corrida::corrida() {
-    duracao = 0;
-    distancia = 0;
-    eficiencia = 0;
+    duracao = 0.0;
+    distancia = 0.0;
+    eficiencia = 0.0;
 }
 
 corrida::~corrida() {
 }
 
-void corrida::addTrecho(trecho t) {
+void corrida::addTrecho(trecho t, int velocidade) {
     historico.push_back(t);
+    distancia += t.getDistancia();   
+    tempo += corridaTemp.distancia /velocidade
+    
 }
 
 int corrida::getDuracao() const {
@@ -43,65 +46,64 @@ corrida listacorridas::getCorrida(int index) const {
     return lista[index];
 }
 // fazer uma função que cria todas as corridas
-void listacorridas::criaCorrida(){
-    int n = 1; // comeca em 1 pq defaulta 1 corrida
-    
-    corrida corridaTemp;
-    vector<parada> paradaTemp;
-    
-    parada temp;
-    
-    temp(escalonador[0].origem, 0, escalonador[0].passageiro);
-    paradaTemp.push_back(temp);
-    temp(escalonador[0].destino, 1, escalonador[0].passageiro);
-    paradaTemp.push_back(temp);
-    
-    // monta primeiro escopa de corrida
-    while(true){
-        if (escalonador[n].tempoSolicitacao - escalonador[0].tempoSolicitacao >= renato.delta || n + 1 == renato.eta){ // tempo limite
-            break;  // viabilidade do delta é defenido por tempoc1 - tempoc0 < delta, pq se o c0 é o tempo 0 
-        }
-        else{
-            for(int j = 0; j == n; j++){
-                    int tempAlfa =  calcularDistancia(paradaTemp[2*j].localizacao, escalonador[n].origem)
-                    int tempBeta =  calcularDistancia(paradaTemp[2*j + 1], escalonador[n].destino)
-                    if (renato.alfa > tempAlfa && renato.beta > tempBeta){
-                            eficiencia antes de add
-                            temp(escalonador[n].origem, 0, escalonador[n].passageiro);
-                            paradaTemp.push_back(temp);
-                            temp(escalonador[n].destino, 1, escalonador[n].passageiro);
-                            paradaTemp.push_back(temp);
-                            n++
-                    }
-                    else{
+void listacorridas::criaCorridas(){
+    while(escalonador > 0){
+        int n = 1; // comeca em 1 pq defaulta 1 corrida
+        
+        corrida corridaTemp;
+        vector<parada> paradaTemp;
+        
+        parada temp;
+        
+        temp(escalonador[0].origem, embarque, escalonador[0].passageiro);
+        paradaTemp.push_back(temp);
+        temp(escalonador[0].destino, desembarque, escalonador[0].passageiro);
+        paradaTemp.push_back(temp);
+        double eficiencia = 1
+        int i = 1
+        // monta primeiro escopa de corrida
+        while(true){
+            if (n >= escalonador.get_size() || escalonador[n].tempoSolicitacao - escalonador[0].tempoSolicitacao >= renato.delta || n + 1 == renato.eta){ // tempo limite
+                break;  // viabilidade do delta é definido por tempoc1 - tempoc0 < delta, pq se o c0 é o tempo 0 
+            }
+            else{
+                for(int j = 0; j < n; j++){
+                    double tempAlfa = calcularDistancia(paradaTemp[2*j].localizacao, escalonador[n].origem);
+                    double tempBeta = calcularDistancia(paradaTemp[2*j + 1].localizacao, escalonador[n].destino);
+                    eficiencia = calcularDistancia(escalonador[0].origem, escalonador[0].destino) / calcularDistancia(escalonador[n].origem, escalonador[n].destino);
+                    if (renato.alfa < tempAlfa || renato.beta < tempBeta || renato.lambda > eficiencia ){
+                        i = 0;
                         break;
                     }
+                if(i == 1)
+                    temp(escalonador[n].origem, embarque, escalonador[n].passageiro);
+                    paradaTemp.push_back(temp);
+                    temp(escalonador[n].destino, desembarque, escalonador[n].passageiro);
+                    paradaTemp.push_back(temp);
+                    n++;
+                }
+                else {
+                    i = 1;
+                    break;
                 }
             }
         }
+        for (int j = 0; j < paradaTemp.getsize()-1; j++){
+            corridaTemp.addTrecho(paradaTemp[j], paradaTemp[j+1], renato.gama)
+        }
+        for (int j = 0; j =< n; j++){
+            escalonador.pop();
+            escalonador.pop();
+        }
+        //verificar lambda, olhar qual menor trecho, maior trecho a diferenca resulta no lambdacs 
+        ///monta os trechos
+        corridas += corridaTemp.getTempo();
+        lista.push_back(criaCorrida())
+        
+        std::cout << corridas << lista[i].getDistancia();
+        for(int j = 0; j < paradaTemp.getsize(); j++){
+            std::cout << ParadaTemp.localizacao.x << ParadaTemp.localizacao.y;  
+        }
+        std::cout << '\n';
     }
-    //verificar lambda, olhar qual menor trecho, maior trecho a diferenca resulta no lambdacs 
-    ///monta os trechos
-
-    
-    // cria corrida e escolona
-
-    return // tempo de conclusão
-           // distancia total percorrida
-           // numero de paradas
-           // sequencia coordenadas
-    
-   
-   
-   
-           // fazer n corridas dentro do delta apt de corrida0
-    // C = c0
-    // r = Origem_c0 e Destino_c0
-    // atualizar corrida r associada ao conjunto C, sequencia de pontos de parada pelo veiculo na coleta e entrega
-    // na versão basica as coletas e entregas são na msm ordem. que também é ordem de demandas
-    // verifique se r satisfaz lambda, se n, remova ci de r
-    // adicionar r ao vetor
-    // escalone até o primeiro ponto de coleta da corrida r
-
-
 }

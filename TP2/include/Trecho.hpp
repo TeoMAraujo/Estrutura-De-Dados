@@ -12,17 +12,18 @@ enum natureza {
 };
 
 int abs(int x);
-calcularDistancia(coord i, coord f)
+calcularDistancia(coord i, coord f);
+
 class trecho {
 private:
     parada inicio, fim;
-    int tempo;
     double distancia;
     natureza do_trecho;
     
 public:
     trecho(parada in, parada fi);
     void printinfo();
+    getDistancia();
 };
 
 #endif
