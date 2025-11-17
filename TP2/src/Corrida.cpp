@@ -1,34 +1,50 @@
 #include "../include/Corrida.hpp"
+#include <iostream>
+#include <iomanip>
 
 corrida::corrida() {
-    duracao = 0.0;
+    tempo = 0.0;
     distancia = 0.0;
-    eficiencia = 0.0;
+    eficiencia = 1.0; // eficiência inicial = 1 (máxima)
+    
+    // Vector historico é inicializado automaticamente
+    // trecho de_deslocamento usa construtor padrão
 }
 
 corrida::~corrida() {
 }
 
-void corrida::addTrecho(trecho t, int velocidade) {
+void corrida::addTrecho(trecho t, double velocidade) {
     historico.push_back(t);
-    distancia += t.getDistancia();   
-    tempo += corridaTemp.distancia /velocidade
-    
+    distancia += t.getDistancia();
+    tempo += t.getDistancia() / velocidade; // calcula tempo = distância / velocidade
 }
 
-int corrida::getDuracao() const {
-    return duracao;
+double corrida::getDuracao() const {
+    return tempo;
 }
 
-int corrida::getDistancia() const {
+double corrida::getDistancia() const {
     return distancia;
 }
 
-int corrida::getEficiencia() const {
+double corrida::getEficiencia() const {
     return eficiencia;
+}
+
+int corrida::getNumTrechos() const {
+    return historico.get_size();
+}
+
+trecho corrida::getTrechoByIndex(int index) const {
+    if (index < 0 || index >= historico.get_size()) {
+        throw std::out_of_range("Invalid trecho index");
+    }
+    return historico[index];
 }
 listacorridas::listacorridas(motorista m) {
     renato = m;
+    corridas = 0.0;
 }
 
 listacorridas::~listacorridas() {
@@ -47,63 +63,124 @@ corrida listacorridas::getCorrida(int index) const {
 }
 // fazer uma função que cria todas as corridas
 void listacorridas::criaCorridas(){
-    while(escalonador > 0){
+    while(escalonador.get_size() > 0){
         int n = 1; // comeca em 1 pq defaulta 1 corrida
         
         corrida corridaTemp;
         vector<parada> paradaTemp;
         
-        parada temp;
-        
-        temp(escalonador[0].origem, embarque, escalonador[0].passageiro);
-        paradaTemp.push_back(temp);
-        temp(escalonador[0].destino, desembarque, escalonador[0].passageiro);
-        paradaTemp.push_back(temp);
-        double eficiencia = 1
-        int i = 1
+        // Adiciona primeira demanda usando setter
+        parada paradaAtual;
+        paradaAtual.setEmbarque(escalonador[0].origem, escalonador[0].passageiro);
+        paradaTemp.push_back(paradaAtual);
+        paradaAtual.setDesembarque(escalonador[0].destino, escalonador[0].passageiro);
+        paradaTemp.push_back(paradaAtual);
+        double eficiencia = 1.0;
         // monta primeiro escopa de corrida
         while(true){
-            if (n >= escalonador.get_size() || escalonador[n].tempoSolicitacao - escalonador[0].tempoSolicitacao >= renato.delta || n + 1 == renato.eta){ // tempo limite
+            if (n >= escalonador.get_size() || escalonador[n].tempoSolicitacao - escalonador[0].tempoSolicitacao >= renato.delta || n >= renato.eta){ // tempo limite
                 break;  // viabilidade do delta é definido por tempoc1 - tempoc0 < delta, pq se o c0 é o tempo 0 
             }
             else{
+                bool podeAdicionar = true;
+                // Calcula eficiência da rota combinada
+                double distanciaUtil = 0.0;
+                double distanciaTotal = 0.0;
+                
+                for(int j = 0; j <= n; j++) {
+                    distanciaUtil += calcularDistancia(escalonador[j].origem, escalonador[j].destino);
+                }
+                
+                // Simula distância da rota: embarques → desembarques
+                for(int j = 0; j < n; j++) {
+                    distanciaTotal += calcularDistancia(escalonador[j].origem, escalonador[j+1].origem);
+                }
+                distanciaTotal += calcularDistancia(escalonador[n].origem, escalonador[0].destino);
+                for(int j = 0; j < n; j++) {
+                    distanciaTotal += calcularDistancia(escalonador[j].destino, escalonador[j+1].destino);
+                }
+                
+                eficiencia = distanciaUtil / distanciaTotal;
+                
                 for(int j = 0; j < n; j++){
                     double tempAlfa = calcularDistancia(paradaTemp[2*j].localizacao, escalonador[n].origem);
                     double tempBeta = calcularDistancia(paradaTemp[2*j + 1].localizacao, escalonador[n].destino);
-                    eficiencia = calcularDistancia(escalonador[0].origem, escalonador[0].destino) / calcularDistancia(escalonador[n].origem, escalonador[n].destino);
                     if (renato.alfa < tempAlfa || renato.beta < tempBeta || renato.lambda > eficiencia ){
-                        i = 0;
+                        podeAdicionar = false;
                         break;
                     }
-                if(i == 1)
-                    temp(escalonador[n].origem, embarque, escalonador[n].passageiro);
-                    paradaTemp.push_back(temp);
-                    temp(escalonador[n].destino, desembarque, escalonador[n].passageiro);
-                    paradaTemp.push_back(temp);
-                    n++;
                 }
-                else {
-                    i = 1;
+                if(podeAdicionar && n < escalonador.get_size()) {
+                    // Adiciona nova demanda usando setter
+                    paradaAtual.setEmbarque(escalonador[n].origem, escalonador[n].passageiro);
+                    paradaTemp.push_back(paradaAtual);
+                    paradaAtual.setDesembarque(escalonador[n].destino, escalonador[n].passageiro);
+                    paradaTemp.push_back(paradaAtual);
+                    n++;
+                } else {
                     break;
                 }
             }
         }
-        for (int j = 0; j < paradaTemp.getsize()-1; j++){
-            corridaTemp.addTrecho(paradaTemp[j], paradaTemp[j+1], renato.gama)
+        for (int j = 0; j < paradaTemp.get_size()-3; j +=2){
+            trecho t(paradaTemp[j], paradaTemp[j+2]);
+            corridaTemp.addTrecho(t, renato.gama); // embarque
         }
-        for (int j = 0; j =< n; j++){
-            escalonador.pop();
-            escalonador.pop();
+        {
+            trecho x(paradaTemp[paradaTemp.get_size()-2], paradaTemp[1]);
+            corridaTemp.addTrecho(x, renato.gama); // embarque
         }
+        
+        for (int j = 1; j < paradaTemp.get_size()-2; j += 2){
+            trecho t(paradaTemp[j], paradaTemp[j+2]);
+            corridaTemp.addTrecho(t, renato.gama); // passa a velocidade do motorista
+        }
+        
+        
+        
         //verificar lambda, olhar qual menor trecho, maior trecho a diferenca resulta no lambdacs 
         ///monta os trechos
-        corridas += corridaTemp.getTempo();
-        lista.push_back(criaCorrida())
+        corridas = escalonador[0].tempoSolicitacao + corridaTemp.getDuracao();
+        lista.push_back(corridaTemp);
+       
+        for (int j = 0; j < n; j++){
+            escalonador.pop();
+        }
+
+        std::cout << std::fixed << std::setprecision(2);
+        std::cout << corridas << " " << corridaTemp.getDistancia() << " " << (corridaTemp.getNumTrechos() + 1);
         
-        std::cout << corridas << lista[i].getDistancia();
-        for(int j = 0; j < paradaTemp.getsize(); j++){
-            std::cout << ParadaTemp.localizacao.x << ParadaTemp.localizacao.y;  
+        // Imprime primeiro ponto do primeiro trecho
+        if(corridaTemp.getNumTrechos() > 0) {
+            trecho primeiroTrecho = corridaTemp.getTrechoByIndex(0);
+            parada inicioTrecho = primeiroTrecho.getInicio();
+            std::cout << " " << inicioTrecho.localizacao.x << " " << inicioTrecho.localizacao.y;
+        }
+        
+        // Imprime pontos finais de cada trecho (sequência da rota)
+        for(int j = 0; j < corridaTemp.getNumTrechos(); j++){
+            trecho trechoAtual = corridaTemp.getTrechoByIndex(j);
+            parada fimTrecho = trechoAtual.getFim();
+            std::cout << " " << fimTrecho.localizacao.x << " " << fimTrecho.localizacao.y;
         }
         std::cout << '\n';
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

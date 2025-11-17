@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Corrida.hpp"
 
-int main {
+int main() {
     motorista tempmotor;
     
     std::cin >> tempmotor.eta;  
@@ -17,7 +17,7 @@ int main {
 
     for (int i = 0; i < tempmotor.numdemandas; i++){
         demanda p;
-        cin >> p.passageiro >> p.tempoSolicitacao >> p.origem.x >> p.origem.y >> p.destino.x >> p.destino.y;
+        std::cin >> p.passageiro >> p.tempoSolicitacao >> p.origem.x >> p.origem.y >> p.destino.x >> p.destino.y;
         percursos.addDemanda(p);
     }
 

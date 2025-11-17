@@ -1,7 +1,7 @@
 #ifndef DEMANDA_HPP
 #define DEMANDA_HPP
 
-enum corrida {
+enum tipoCorrida {
   Demandada,
   Individual,
   Combinada,
@@ -16,7 +16,20 @@ struct demanda {
   int passageiro;
   int tempoSolicitacao;
   coord origem, destino;
-  corrida tipo;
+  tipoCorrida tipo;
+  
+  // Operadores de comparação para minHeap
+  bool operator<(const demanda& other) const {
+    return tempoSolicitacao < other.tempoSolicitacao;
+  }
+  
+  bool operator>(const demanda& other) const {
+    return tempoSolicitacao > other.tempoSolicitacao;
+  }
+  
+  bool operator>=(const demanda& other) const {
+    return tempoSolicitacao >= other.tempoSolicitacao;
+  }
 };
 
 #endif

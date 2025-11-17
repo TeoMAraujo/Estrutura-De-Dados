@@ -26,12 +26,16 @@ class corrida {
         ~corrida();
         
         // Add methods as needed
-        void addTrecho(trecho t);
+        void addTrecho(trecho t, double velocidade);
         int getTrecho(int i) const;
         
-        int getDuracao() const;
-        int getDistancia() const;
-        int getEficiencia() const;
+        double getDuracao() const;
+        double getDistancia() const;
+        double getEficiencia() const;
+        
+        // Métodos para acessar o histórico
+        int getNumTrechos() const;
+        trecho getTrechoByIndex(int index) const;
 };
 
 class listacorridas{
@@ -39,7 +43,7 @@ class listacorridas{
         minHeap<demanda> escalonador;
         vector<corrida> lista;
         motorista renato; //nome do motorista hipotetico
-        tempo corridas;
+        double corridas;
     public:
         listacorridas(motorista m);
         ~listacorridas();

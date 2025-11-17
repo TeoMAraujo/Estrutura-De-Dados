@@ -2,18 +2,25 @@
 
 int abs(int x) {
     if (x < 0) {
-        x -= 2 * x;
+        x = -x;
     }
     return x;
 }
 
-int trecho::calcularDistancia(coord i, coord f){
-    int temp;
+double calcularDistancia(coord i, coord f){
+    double dx = abs(f.x - i.x);
+    double dy = abs(f.y - i.y);
 
-    temp.y = abs(f.x - i.x);
-    temp.y = abs(f.y - i.y);
+    return sqrt(dx * dx + dy * dy);
+}
 
-    return sqrt(temp.x * temp.x + temp.y *temp.y);
+trecho::trecho() {
+    // Construtor padrão - inicializa com valores seguros
+    parada paradaVazia;
+    this->inicio = paradaVazia;
+    this->fim = paradaVazia;
+    this->distancia = 0.0;
+    this->do_trecho = deslocamento;
 }
 
 trecho::trecho(parada in, parada fi) {
@@ -23,10 +30,11 @@ trecho::trecho(parada in, parada fi) {
     
     this->distancia = calcularDistancia(inicio.localizacao, fim.localizacao);
     
-    if (inicio.tipo == 0 && fim.tipo == 0) {
+    // Determina natureza do trecho baseado nos tipos de parada
+    if (inicio.tipo == embarque && fim.tipo == embarque) {
         do_trecho = coleta;
     }
-    else if (inicio.tipo == 1 && fim.tipo == 1) {
+    else if (inicio.tipo == desembarque && fim.tipo == desembarque) {
         do_trecho = entrega;
     }
     else {
@@ -34,6 +42,6 @@ trecho::trecho(parada in, parada fi) {
     }
 }
 
-void trecho::printinfo() {
-    std::cout << inicio << fim;
+double trecho::getDistancia() const {
+    return distancia;
 }

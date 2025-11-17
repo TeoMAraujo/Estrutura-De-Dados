@@ -12,7 +12,7 @@ enum natureza {
 };
 
 int abs(int x);
-calcularDistancia(coord i, coord f);
+double calcularDistancia(coord i, coord f);
 
 class trecho {
 private:
@@ -21,9 +21,14 @@ private:
     natureza do_trecho;
     
 public:
+    trecho(); // Construtor padrão
     trecho(parada in, parada fi);
     void printinfo();
-    getDistancia();
+    double getDistancia() const;
+    
+    // Getters públicos para acessar as paradas
+    parada getInicio() const { return inicio; }
+    parada getFim() const { return fim; }
 };
 
 #endif
