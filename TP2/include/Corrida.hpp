@@ -19,23 +19,21 @@ struct motorista{
 class corrida {
     private:
         vector<trecho> historico; // msm numero de trechos de coleta e entrega numero total menos 
-        trecho de_deslocamento; // so 1 trecho de deslocamento 1
         double tempo, distancia, eficiencia;
     public:
+        //constructors
         corrida();
         ~corrida();
         
-        // Add methods as needed
-        void addTrecho(trecho t, double velocidade);
+        //getters e "setters"
         int getTrecho(int i) const;
-        
         double getDuracao() const;
         double getDistancia() const;
-        double getEficiencia() const;
-        
-        // Métodos para acessar o histórico
+        double getEficiencia() const;        
         int getNumTrechos() const;
         trecho getTrechoByIndex(int index) const;
+        void addTrecho(trecho t, double velocidade);
+        
 };
 
 class listacorridas{
@@ -45,13 +43,16 @@ class listacorridas{
         motorista renato; //nome do motorista hipotetico
         double corridas;
     public:
+        //constructors
         listacorridas(motorista m);
         ~listacorridas();
         
-        // Add methods as needed
+        // getters e setters
         void addCorrida(corrida c);
         void addDemanda(demanda d);
         corrida getCorrida(int index) const;
+
+        // method
         void criaCorridas();
 };
 #endif

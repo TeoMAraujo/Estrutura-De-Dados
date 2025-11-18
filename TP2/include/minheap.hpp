@@ -22,7 +22,7 @@ public:
     int get_capacity() const;
 
 int getAncestral(int i){ 
-	return (i-1)/2; // se sqguir a logica de bitshift n se transformaria em float
+	return (i-1)/2; // se seguir a logica de bitshift n se transformaria em float
 } 
 int getSucessorEsq(int i){ 
 	return 2 * i + 1; 
@@ -59,7 +59,7 @@ minHeap<T>::minHeap(const minHeap<T>& other) {
             ptr[i] = other.ptr[i];
         }
     } else {
-        ptr = nullptr;
+        ptr = NULL;
     }
 }
 
@@ -194,7 +194,7 @@ minHeap<T>& minHeap<T>::operator=(const minHeap<T>& other) { // = operator
                 ptr[i] = other.ptr[i];
             }
         } else {
-            ptr = nullptr;
+            ptr = NULL;
         }
     }
     return *this;

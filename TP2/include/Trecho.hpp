@@ -21,14 +21,16 @@ private:
     natureza do_trecho;
     
 public:
+    //constructor
     trecho(); // Construtor padrão
     trecho(parada in, parada fi);
-    void printinfo();
-    double getDistancia() const;
+    ~trecho(); // Destrutor
     
-    // Getters públicos para acessar as paradas
+    // getters 
     parada getInicio() const { return inicio; }
     parada getFim() const { return fim; }
+    double getDistancia() const;
+    
 };
 
 #endif

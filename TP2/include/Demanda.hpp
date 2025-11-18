@@ -5,7 +5,7 @@ enum tipoCorrida {
   Demandada,
   Individual,
   Combinada,
-  Concluída
+  Concluida
 };
 
 struct coord {
@@ -18,7 +18,7 @@ struct demanda {
   coord origem, destino;
   tipoCorrida tipo;
   
-  // Operadores de comparação para minHeap
+  // é necessario esses operadores pro minheap funcionar
   bool operator<(const demanda& other) const {
     return tempoSolicitacao < other.tempoSolicitacao;
   }

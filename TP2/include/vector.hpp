@@ -31,7 +31,7 @@ public:
 
     // operators
     T& operator[](int index);
-    const T& operator[](int index) const; // versão const
+    const T& operator[](int index) const; 
     vector<T>& operator=(const vector<T>& other); // assignment operator
 };
 
@@ -147,7 +147,7 @@ T& vector<T>::operator[](int index) { //to be able to acess variables
 }
 
 template <class T>
-const T& vector<T>::operator[](int index) const { //versão const do operador[]
+const T& vector<T>::operator[](int index) const { 
     if (index < 0 || index >= this->size) {
         throw std::out_of_range("invalid index");
     }

@@ -1,6 +1,6 @@
-#include "../include/Trecho.hpp"
+#include "Trecho.hpp"
 
-int abs(int x) {
+double abs(double x) {
     if (x < 0) {
         x = -x;
     }
@@ -15,7 +15,6 @@ double calcularDistancia(coord i, coord f){
 }
 
 trecho::trecho() {
-    // Construtor padrão - inicializa com valores seguros
     parada paradaVazia;
     this->inicio = paradaVazia;
     this->fim = paradaVazia;
@@ -29,8 +28,8 @@ trecho::trecho(parada in, parada fi) {
     
     
     this->distancia = calcularDistancia(inicio.localizacao, fim.localizacao);
-    
-    // Determina natureza do trecho baseado nos tipos de parada
+     
+    //natureza
     if (inicio.tipo == embarque && fim.tipo == embarque) {
         do_trecho = coleta;
     }
@@ -40,6 +39,10 @@ trecho::trecho(parada in, parada fi) {
     else {
         do_trecho = deslocamento;
     }
+}
+
+trecho::~trecho() {
+    // Destrutor vazio - membros são POD e destruídos automaticamente
 }
 
 double trecho::getDistancia() const {

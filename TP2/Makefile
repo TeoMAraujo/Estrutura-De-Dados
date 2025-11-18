@@ -1,28 +1,26 @@
-SRC = src
-OBJ = obj
-BIN = bin
-INC = include
-
-SOURCES = $(wildcard $(SRC)/*.cpp)
-SOURCES := $(filter-out $(SRC)/vector.cpp,$(SOURCES))
-OBJECTS = $(patsubst $(SRC)/%.cpp,$(OBJ)/%.o,$(SOURCES))
-
 CXX = g++
-CXXFLAGS = -I$(INC) -Wall -Wextra -std=c++11
+CXXFLAGS = -Iinclude -std=c++11
+TARGET = bin/tp2.out
+OBJDIR = obj
+BINDIR = bin
 
-all: $(BIN)/tp1.out
+# Lista de arquivos fonte
+SOURCES = src/main.cpp src/Corrida.cpp src/Trecho.cpp src/Parada.cpp
+OBJECTS = $(SOURCES:src/%.cpp=$(OBJDIR)/%.o)
 
-$(OBJ)/%.o: $(SRC)/%.cpp | $(OBJ)
+all: $(TARGET)
+
+# Regra para criar o executável
+$(TARGET): $(OBJECTS)
+	mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
+
+# Regra padrão para compilar arquivos .cpp em .o
+$(OBJDIR)/%.o: src/%.cpp
+	mkdir -p $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN)/tp1.out: $(OBJECTS) | $(BIN)
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-$(OBJ):
-	mkdir -p $(OBJ)
-
-$(BIN):
-	mkdir -p $(BIN)
-
 clean:
-	rm -f $(OBJ)/*.o $(BIN)/tp1.out
+	rm -f $(OBJDIR)/*.o $(TARGET)
+
+.PHONY: all clean
