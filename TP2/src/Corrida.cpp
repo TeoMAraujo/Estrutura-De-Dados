@@ -161,7 +161,7 @@ void listacorridas::criaCorridas(){
         }
         std::cout << '\n';
     }
-}
+}	O(N×η + N log N)
 
 
 

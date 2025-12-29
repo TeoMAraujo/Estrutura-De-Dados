@@ -13,36 +13,30 @@ int main() {
     std::cin >> tempmotor.lambda;   // eficiência mínima da corrida combinada
     std::cin >> tempmotor.numdemandas; // número de demandas a serem simuladas 
 
-    // ROBUSTEZ: Validação dos parâmetros
     if (tempmotor.eta <= 0 || tempmotor.gama <= 0.0 || tempmotor.delta < 0.0 || 
         tempmotor.alfa < 0.0 || tempmotor.beta < 0.0 || 
         tempmotor.lambda < 0.0 || 
         tempmotor.numdemandas < 0) {
-        return 1; // Parâmetros inválidos
+        return 1; 
     }
 
-    listacorridas percursos(tempmotor); //inicia os percursos inicializando o motorista
+    listacorridas percursos(tempmotor); 
 
     for (int i = 0; i < tempmotor.numdemandas; i++){
         demanda p;
         std::cin >> p.passageiro >> p.tempoSolicitacao >> p.origem.x >> p.origem.y >> p.destino.x >> p.destino.y;
         
-        // ROBUSTEZ: Validar tempo da demanda
         if (p.tempoSolicitacao < 0.0) {
-            return 1; // Tempo inválido
-        }
+            return 1;        }
         
         percursos.addDemanda(p);
     }
 
-    if (tempmotor.numdemandas > 0) {
-        percursos.criaCorridas();
-    }
- 
-//tempo de conclusão da corrida
-// distancia total percorrida
-// numero de paradas
-// sequencia de coordenanadas associadas   
+    percursos.criaCorridas();
+    //tempo de conclusão da corrida
+    // distancia total percorrida
+    // numero de paradas
+    // sequencia de coordenanadas associadas   
     
     return 0;
 }
